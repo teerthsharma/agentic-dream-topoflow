@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Teerth Sharma. All rights reserved.
+
 """
 topoflow — 3D Persistent Homology Visualizer
 

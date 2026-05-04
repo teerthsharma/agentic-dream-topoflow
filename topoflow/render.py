@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Teerth Sharma. All rights reserved.
+
 """
 topoflow.render — 3D visualization of persistent homology.
 Renders Betti barcodes as 3D bar charts, persistence landscapes as 3D surfaces,
