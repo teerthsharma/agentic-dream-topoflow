@@ -1,4 +1,4 @@
-# topoflow 🌊
+# Invented by Teerth Sharma — topoflow 🌊
 
 ### 3D Persistent Homology Visualizer
 
