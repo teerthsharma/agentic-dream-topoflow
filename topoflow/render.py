@@ -8,11 +8,8 @@ VR complexes as 3D meshes, and produces animated GIFs.
 
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib import cm
 from matplotlib.colors import LinearSegmentedColormap
-from mpl_toolkits.mplot3d import Axes3D
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
-import matplotlib.animation as animation
 from PIL import Image
 import io
 import warnings
@@ -313,19 +310,18 @@ def create_vr_complex_visualization(
     ax = fig.add_subplot(111, projection="3d", facecolor="#0a0a1a")
 
     n_points = len(points)
-    colors = plt.cm.plasma(np.linspace(0.1, 0.9, n_points))
 
     # Scatter plot
     if points.shape[1] == 2:
         x = points[:, 0]
         y = points[:, 1]
         z = np.zeros(n_points)
-        scatter = ax.scatter(x, y, z, c=range(n_points), cmap=TORUS_CMAP, s=80, depthshade=True)
+        ax.scatter(x, y, z, c=range(n_points), cmap=TORUS_CMAP, s=80, depthshade=True)
     else:
         x = points[:, 0]
         y = points[:, 1]
         z = points[:, 2]
-        scatter = ax.scatter(x, y, z, c=range(n_points), cmap=TORUS_CMAP, s=80, depthshade=True)
+        ax.scatter(x, y, z, c=range(n_points), cmap=TORUS_CMAP, s=80, depthshade=True)
 
     # Add edges
     if edges is not None and not point_cloud_only:
@@ -553,9 +549,6 @@ def create_collapse_animation(
     max_t = np.max(t)
 
     frames = []
-
-    # Color scheme
-    cmap = NEON_CMAP
 
     for frame_idx in range(n_frames):
         fig, (ax1, ax2) = plt.subplots(1, 2, figsize=figsize, facecolor="#0a0a1a")
@@ -929,7 +922,6 @@ def _render_betti_panel(ax, landscapes):
     """Helper to render Betti curves panel."""
     ax.set_facecolor("#0a0a1a")
     t = landscapes["t"]
-    cmap = plt.cm.cool
 
     for dim in range(3):
         key = f"landscape_{dim}"
@@ -970,7 +962,7 @@ def _render_landscape_panel(ax, landscapes, frame_idx, n_frames, fullscreen=Fals
     azimuth = (frame_idx / n_frames) * 360
     elevation = 25 + 10 * np.sin(2 * np.pi * frame_idx / n_frames)
 
-    surf = ax.plot_surface(t_2d, k_2d, Z, cmap=TORUS_CMAP, linewidth=0, antialiased=True, alpha=0.85)
+    ax.plot_surface(t_2d, k_2d, Z, cmap=TORUS_CMAP, linewidth=0, antialiased=True, alpha=0.85)
 
     for k in range(n_functions):
         ax.plot(t, [k] * len(t), landscape[k], color=TORUS_CMAP(k / n_functions), linewidth=1.5, alpha=0.7)

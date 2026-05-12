@@ -8,7 +8,10 @@ import argparse
 import sys
 import os
 from pathlib import Path
-import numpy as np
+
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
 
 from .topology import (
     generate_random_point_cloud,
@@ -24,7 +27,6 @@ from .render import (
     create_3d_barcode_chart,
     create_3d_persistence_surface,
     create_vr_complex_visualization,
-    create_betti_curves_plot,
     create_persistence_diagram,
     create_collapse_animation,
     create_demo_animation,
@@ -292,7 +294,7 @@ def handle_render(args):
             n_frames=args.n_frames,
         )
     else:
-        print(f"[topoflow] Creating static visualization...")
+        print("[topoflow] Creating static visualization...")
         if args.type == "auto":
             viz_type = "barcode"
         else:
@@ -374,7 +376,7 @@ def handle_demo(args):
 
 def handle_random(args):
     """Handle the random command."""
-    print(f"[topoflow] Generating random point cloud...")
+    print("[topoflow] Generating random point cloud...")
     print(f"  Points: {args.n_points}")
     print(f"  Dims: {args.n_dims}")
     print(f"  Distribution: {args.distribution}")
@@ -387,23 +389,22 @@ def handle_random(args):
         seed=args.seed,
     )
 
-    print(f"[topoflow] Computing persistent homology...")
+    print("[topoflow] Computing persistent homology...")
     result = compute_persistent_homology(points, max_dim=1)
 
     dgms = result["dgms"]
     barcodes = extract_barcodes(dgms)
-    betti_curves = compute_betti_curves(barcodes)
+    compute_betti_curves(barcodes)  # Computed for side effects
     landscapes = compute_persistence_landscape(barcodes)
 
     summary = get_topological_summary(dgms)
-    print(f"[topoflow] Results:")
+    print("[topoflow] Results:")
     print(f"  H_0 features: {summary.get('betti_0', 0)}")
     print(f"  H_1 features: {summary.get('betti_1', 0)}")
     print(f"  Total persistence H_0: {summary.get('total_persistence_0', 0):.3f}")
     print(f"  Total persistence H_1: {summary.get('total_persistence_1', 0):.3f}")
 
-    print(f"[topoflow] Creating visualization...")
-    output_ext = Path(args.output).suffix.lower()
+    print("[topoflow] Creating visualization...")
 
     if args.viz == "all":
         # Create multi-panel figure
@@ -480,12 +481,6 @@ def handle_collapse(args):
 
     print(f"[topoflow] Saved: {path}")
     return 0
-
-
-# Need to import matplotlib for random command
-import matplotlib
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt
 
 
 if __name__ == "__main__":

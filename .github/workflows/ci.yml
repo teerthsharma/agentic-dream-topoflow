@@ -31,4 +31,4 @@ jobs:
       - name: Install dependencies
         run: pip install ripser persim numpy scipy matplotlib
       - name: Run visualization test
-        run: python -c "from manifold_viz import render_landscape; print('viz OK')"
+        run: python -c "from topoflow import create_persistence_diagram; print('viz OK')"
